@@ -21,16 +21,16 @@ const nextConfig: NextConfig = {
   },
 
   // 2. Configuración para Turbopack (el motor nuevo de Next 15/16)
-  experimental: {
-    turbopack: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
-  },
+  // experimental: {
+  //   turbo: {
+  //     rules: {
+  //       '*.svg': {
+  //         loaders: ['@svgr/webpack'],
+  //         as: '*.js',
+  //       },
+  //     },
+  //   },
+  // },
 };
 
 export default withPWA(nextConfig);
