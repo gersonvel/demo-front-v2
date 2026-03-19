@@ -14,7 +14,7 @@ export default function AuthLayout({
   return (
     <div className="relative p-6 bg-white z-1 dark:bg-gray-900 sm:p-0">
       <ThemeProvider>
-        <div className="fixed inset-0 flex flex-col lg:flex-row w-full h-full justify-center items-center dark:bg-gray-900 overflow-hidden touch-none p-6 sm:p-0">
+        <div className="fixed inset-0 flex flex-col lg:flex-row w-full h-full justify-center items-center dark:bg-gray-900 overflow-hidden touch-pan-y p-6 sm:p-0">
           {children}
           <div className="lg:w-1/2 w-full h-full bg-brand-950 dark:bg-white/5 lg:grid items-center hidden">
             <div className="relative items-center justify-center  flex z-1">
