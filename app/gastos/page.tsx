@@ -5,6 +5,8 @@ import { useSearchParams, useRouter } from "next/navigation";
 import api from "../lib/axios";
 import { useAuth } from "../context/AuthContext";
 import { Gasto, ResponseDTO, Category, Deuda } from "../types/types";
+import Input from "@/components/form/input/InputField";
+import DatePicker from "@/components/form/date-picker";
 
 export default function GastosPage() {
   return (
@@ -123,7 +125,7 @@ function GastosContent() {
       // Actualizamos la UI: Cerramos modal y refrescamos lista
       setIsModalOpenDelete(false);
       setGastoSeleccionado(null);
-      fetchGastos();     
+      fetchGastos();
     } catch (error) {
       console.error("Error al borrar:", error);
       alert("No se pudo eliminar el registro.");
@@ -181,7 +183,7 @@ function GastosContent() {
       setIsModalOpen(false);
       // Limpiar formulario...
       fetchGastos();
-       setFormData({
+      setFormData({
         description: "",
         amount: "",
         date: new Date().toISOString().split("T")[0],
@@ -410,13 +412,27 @@ function GastosContent() {
                     className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none"
                     placeholder="Monto"
                   />
-                  <input
+                  {/* <input
                     required
                     type="date"
                     name="date"
                     value={formData.date}
                     onChange={handleChange}
                     className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none"
+                  /> */}
+
+                  <DatePicker
+                    id="date-gasto"
+                    placeholder="Fecha"
+                    onChange={(dates, currentDateString) => {
+                      // Usamos "as any" para saltarnos la validación estricta del evento
+                      handleChange({
+                        target: {
+                          name: "date",
+                          value: currentDateString,
+                        },
+                      } as React.ChangeEvent<HTMLInputElement>);
+                    }}
                   />
                 </div>
                 <select
