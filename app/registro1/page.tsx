@@ -124,13 +124,6 @@ export default function RegistroPage() {
           Registrar
         </button>
       </form>
-
-      <button
-        onClick={() => router.push("/login")}
-        className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center gap-1 mb-2"
-      >
-        Volver al Login
-      </button>
     </div>
   );
 }
