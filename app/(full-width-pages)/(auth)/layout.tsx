@@ -1,4 +1,5 @@
 "use client";
+
 import GridShape from "@/components/common/GridShape";
 import ThemeTogglerTwo from "@/components/common/ThemeTogglerTwo";
 import { ThemeProvider } from "@/context/ThemeContext";
@@ -11,36 +12,46 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [isWelcoming, setIsWelcoming] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsWelcoming(false);
-    }, 3000);
+    // Este código se ejecuta cuando el DOM y los scripts base ya están listos
+    // Si quieres un pequeño respiro para que no "parpadee" muy rápido:
+    const handleLoad = () => {
+      // Opcional: un pequeño delay de 500ms para que la transición sea suave
+      setTimeout(() => setIsLoading(false), 500);
+    };
 
-    return () => clearTimeout(timer);
+    if (document.readyState === "complete") {
+      handleLoad();
+    } else {
+      window.addEventListener("load", handleLoad);
+      return () => window.removeEventListener("load", handleLoad);
+    }
   }, []);
 
   return (
     <ThemeProvider>
-      {isWelcoming ? (
-        /* --- ESTA ES TU PANTALLA DE BIENVENIDA --- */
-        <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-brand-950 dark:bg-gray-900 animate-fade-in">
-          <Image
-            width={150}
-            height={150}
-            src="/images/logo/auth-logo.svg" // Tu logo de la PWA
-            alt="Logo"
-            className="animate-pulse"
-          />
-          <h2 className="mt-6 text-2xl font-bold text-white">
-            ¡Bienvenido de nuevo!
-          </h2>
-          <p className="mt-2 text-gray-400">Iniciando aplicación...</p>
+      {isLoading ? (
+        /* --- PANTALLA DE CARGA REAL --- */
+        <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white dark:bg-gray-900 transition-opacity duration-500">
+          <div className="relative flex flex-col items-center">
+            <Image
+              width={120}
+              height={120}
+              src="/images/logo/auth-logo.svg"
+              alt="Logo"
+              className="animate-pulse"
+            />
+            {/* Un spinner opcional para indicar que "está trabajando" */}
+            <div className="mt-4 h-1 w-32 bg-gray-200 overflow-hidden rounded">
+              <div className="h-full bg-brand-950 animate-progress origin-left"></div>
+            </div>
+          </div>
         </div>
       ) : (
-        /* --- ESTE ES TU LAYOUT ORIGINAL --- */
-        <div className="relative p-6 bg-white z-1 dark:bg-gray-900 sm:p-0 animate-fade-in">
+        /* --- TU LAYOUT ORIGINAL --- */
+        <div className="relative p-6 bg-white z-1 dark:bg-gray-900 sm:p-0">
           <div className="fixed inset-0 flex flex-col lg:flex-row w-full h-full justify-center items-center dark:bg-gray-900 overflow-hidden touch-pan-y p-6 sm:p-0">
             {children}
             <div className="lg:w-1/2 w-full h-full bg-brand-950 dark:bg-white/5 lg:grid items-center hidden">
