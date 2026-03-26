@@ -10,15 +10,13 @@ import { AxiosError } from "axios";
 import api from "@/app/lib/axios";
 import Button from "../ui/button/Button";
 
-
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [cargando, setCargando] = useState<boolean>(false);
   const [alertColor, setAlertColor] = useState<String>("");
-  
 
-    // Es buena práctica definir la interfaz
+  // Es buena práctica definir la interfaz
   interface FormValues {
     nombre: string;
     apellido: string;
@@ -40,7 +38,6 @@ export default function SignUpForm() {
   const router = useRouter();
 
   const handleRegistro = async (e: FormEvent<HTMLFormElement>) => {
-
     e.preventDefault();
     setErrorMessage("");
     setAlertColor("");
@@ -49,12 +46,10 @@ export default function SignUpForm() {
     if (!isChecked) {
       setErrorMessage("Acepta nuestros terminos y condiciones");
       setAlertColor("yellow");
-          setCargando(false);
+      setCargando(false);
 
-      
       return;
     }
-
 
     try {
       // Tipamos la respuesta para que coincida con tu ResponseDTO de Java
@@ -76,8 +71,7 @@ export default function SignUpForm() {
       setErrorMessage(message);
       setAlertColor("red");
       // Ahora 'message' será exactamente: "Error: El email ya está en uso"
-    }
-     finally {
+    } finally {
       setCargando(false);
     }
   };
@@ -99,28 +93,24 @@ export default function SignUpForm() {
               Registrarse
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Ingresa ty email y password para registrarte!
+              Ingresa tu email y password para registrarte!
             </p>
           </div>
 
           {errorMessage && (
-         <div
-            className={`border px-4 py-3 rounded relative mb-4 ${
-              alertColor === "red"
-                ? "bg-red-100 border-red-400 text-red-700"
-                : "bg-yellow-100 border-yellow-400 text-yellow-700"
-            }`}
-            role="alert"
-          >
-            {errorMessage}
-          </div>
-        )}
-          <div>
-           
-       
-            <form
-            onSubmit={handleRegistro}
+            <div
+              className={`border px-4 py-3 rounded relative mb-4 ${
+                alertColor === "red"
+                  ? "bg-red-100 border-red-400 text-red-700"
+                  : "bg-yellow-100 border-yellow-400 text-yellow-700"
+              }`}
+              role="alert"
             >
+              {errorMessage}
+            </div>
+          )}
+          <div>
+            <form onSubmit={handleRegistro}>
               <div className="space-y-5">
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   {/* <!-- First Name --> */}
@@ -128,14 +118,17 @@ export default function SignUpForm() {
                     <Label>
                       Nombre<span className="text-error-500">*</span>
                     </Label>
-      
+
                     <Input
                       type="text"
                       id="fname"
                       name="fname"
                       placeholder="Ingresa tu nombre"
-                       onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                        setDataRegistro({ ...dataRegistro, nombre: e.target.value })
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setDataRegistro({
+                          ...dataRegistro,
+                          nombre: e.target.value,
+                        })
                       }
                       required
                     />
@@ -146,14 +139,16 @@ export default function SignUpForm() {
                       Apellidos<span className="text-error-500">*</span>
                     </Label>
 
-  
                     <Input
                       type="text"
                       id="lname"
                       name="lname"
                       placeholder="Ingresa tus apellidos"
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                        setDataRegistro({ ...dataRegistro, apellido: e.target.value })
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setDataRegistro({
+                          ...dataRegistro,
+                          apellido: e.target.value,
+                        })
                       }
                       required
                     />
@@ -165,14 +160,16 @@ export default function SignUpForm() {
                     Email<span className="text-error-500">*</span>
                   </Label>
 
-
                   <Input
                     type="email"
                     id="email"
                     name="email"
                     placeholder="Ingresa email"
                     onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      setDataRegistro({ ...dataRegistro, email: e.target.value })
+                      setDataRegistro({
+                        ...dataRegistro,
+                        email: e.target.value,
+                      })
                     }
                     required
                   />
@@ -183,15 +180,17 @@ export default function SignUpForm() {
                     Password<span className="text-error-500">*</span>
                   </Label>
 
-
                   <div className="relative">
                     <Input
                       placeholder="Ingresa tu password"
                       type={showPassword ? "text" : "password"}
                       onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      setDataRegistro({ ...dataRegistro, password: e.target.value })
-                    }
-                    required
+                        setDataRegistro({
+                          ...dataRegistro,
+                          password: e.target.value,
+                        })
+                      }
+                      required
                     />
                     <span
                       onClick={() => setShowPassword(!showPassword)}
@@ -225,8 +224,7 @@ export default function SignUpForm() {
                 </div>
                 {/* <!-- Button --> */}
                 <div>
-              
-                      <Button
+                  <Button
                     type="submit"
                     size="sm"
                     disabled={cargando}
@@ -242,12 +240,12 @@ export default function SignUpForm() {
 
             <div className="mt-5">
               <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-                Ya tengo una cuenta? {" "}
+                Ya tengo una cuenta?{" "}
                 <Link
                   href="/login"
                   className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
                 >
-                   Login
+                  Login
                 </Link>
               </p>
             </div>
