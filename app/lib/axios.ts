@@ -53,7 +53,7 @@ api.interceptors.response.use(
         if (!rt) throw new Error("No hay refresh token");
 
         const res = await axios.post(
-          'http://localhost:8085/api/auth/refresh', 
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, 
           { refreshToken: rt },
           { withCredentials: true }
         );
