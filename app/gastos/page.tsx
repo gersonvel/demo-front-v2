@@ -232,6 +232,13 @@ function GastosContent() {
             >
               Buscar por fecha en específico
             </button>
+
+            <button
+              onClick={() => router.push("/gastos/buscarMes")}
+              className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center gap-1 mb-2"
+            >
+              Buscar por mes
+            </button>
           </div>
 
           {/* Botón Flotante */}
