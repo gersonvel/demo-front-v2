@@ -81,9 +81,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider value={{ user, login, logout, loading }}>
-      {/* Mientras loading sea true, mostramos un indicador de carga */}
-      {loading ? (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      {/* Si loading es true, mostramos el splash screen, 
+         pero NO eliminamos 'children' del árbol de React.
+      */}
+      {loading && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-50">
           <div className="flex flex-col items-center gap-4">
             <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
             <p className="font-bold text-gray-400 italic">
@@ -91,9 +93,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             </p>
           </div>
         </div>
-      ) : (
-        children
       )}
+
+      {/* Renderizamos children siempre. 
+         Si quieres que no se vea nada mientras carga, puedes envolverlo en un div oculto 
+         o simplemente dejar que el overlay de arriba lo tape.
+      */}
+      {children}
     </AuthContext.Provider>
   );
 };
