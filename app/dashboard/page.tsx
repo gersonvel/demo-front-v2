@@ -86,6 +86,8 @@ export default function DashboardPage() {
   const gastosMensuales = data?.gastosMesActual || 0;
   const totalGastosHistoricos = data?.totalGastosHistoricos || 0;
 
+  console.log(totalGastosHistoricos)
+
   // Calculamos cuántos meses podrías vivir sin ingresos
   // Usamos Math.max(gastosMensuales, 1) para evitar división por cero
   const mesesSupervivencia = (
@@ -194,7 +196,7 @@ export default function DashboardPage() {
           >
             <Card
               title="Gastos del totales"
-              value={data?.totalGastosHistoricos}
+              value={totalGastosHistoricos}
               color="text-orange-600"
             />
           </div>
