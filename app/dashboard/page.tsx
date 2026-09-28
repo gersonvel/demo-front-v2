@@ -86,6 +86,9 @@ export default function DashboardPage() {
   const gastosMensuales = data?.gastosMesActual || 0;
   const totalGastosHistoricos = data?.totalGastosHistoricos || 0;
 
+
+  console.log(data)
+
   console.log(totalGastosHistoricos)
 
   // Calculamos cuántos meses podrías vivir sin ingresos
