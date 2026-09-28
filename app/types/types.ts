@@ -35,11 +35,11 @@ export interface LoginResponse {
 }
 
 export interface ApiResponse<T = any> {
-        status: number;
-        error: boolean;
-        message: string;
-        data: T;
-      }
+  status: number;
+  error: boolean;
+  message: string;
+  data: T;
+}
 
 export interface GastosCategoria {
   nombre: string;
@@ -52,6 +52,7 @@ export interface DashboardData {
   patrimonioNeto: number;
   gastosMesActual: number;
   gastosPorCategoria: GastosCategoria[]; // Ej: { "Comida": 500, "Deuda": 1000 }
+  totalGastosHistoricos: number; // Nuevo campo para gastos totales
 }
 
 export interface ResponseDTO<T> {

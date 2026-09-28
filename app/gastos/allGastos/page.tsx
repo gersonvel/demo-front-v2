@@ -33,6 +33,7 @@ function GastosContent() {
 
   // --- ESTADOS ---
   const [gastos, setGastos] = useState<Gasto[]>([]);
+  const [totalHistorialGastos, setTotalHistorialGastos] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
@@ -67,6 +68,9 @@ function GastosContent() {
 
       const data = res.data.data;
       setGastos(data.content);
+
+      const totalGastos = data.content.reduce((sum, gasto) => sum + gasto.amount, 0);
+      setTotalHistorialGastos(totalGastos); // Si quieres mostrar el total de gastos históricos
       setTotalPages(data.totalPages);
       setTotalElements(data.totalElements);
     } catch (error) {
@@ -156,6 +160,9 @@ function GastosContent() {
               Total de registros: {totalElements}
             </p>
           </div>
+
+          
+
           <button
             onClick={() => setIsModalOpen(true)}
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl font-bold transition-all shadow-lg"
@@ -163,6 +170,20 @@ function GastosContent() {
             + Nuevo Gasto
           </button>
         </div>
+
+        <div className="flex justify-end mb-4">
+             <div className="bg-white px-10 py-6 rounded-[2.5rem] shadow-sm border-l-[12px] border-red-500">
+              <p className="text-gray-400 text-xs font-black uppercase tracking-widest">
+                Total del mes
+              </p>
+              <p className="text-4xl font-black text-gray-900">
+                $
+                {totalHistorialGastos.toLocaleString("es-MX", {
+                  minimumFractionDigits: 2,
+                })}
+              </p>
+            </div>
+          </div> 
 
         {/* TABLA PAGINADA */}
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
