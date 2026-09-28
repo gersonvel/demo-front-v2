@@ -68,6 +68,7 @@ function GastosContent() {
 
       const data = res.data.data;
       setGastos(data.content);
+      console.log(data)
 
       const totalGastos = data.content.reduce((sum, gasto) => sum + gasto.amount, 0);
       setTotalHistorialGastos(totalGastos); // Si quieres mostrar el total de gastos históricos
@@ -174,7 +175,7 @@ function GastosContent() {
         <div className="flex justify-end mb-4">
              <div className="bg-white px-10 py-6 rounded-[2.5rem] shadow-sm border-l-[12px] border-red-500">
               <p className="text-gray-400 text-xs font-black uppercase tracking-widest">
-                Total del mes
+                Total de gastos
               </p>
               <p className="text-4xl font-black text-gray-900">
                 $
