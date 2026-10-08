@@ -4,7 +4,7 @@ import { useEffect, useState, Suspense, ChangeEvent, FormEvent } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import api from "../../lib/axios";
 import { useAuth } from "../../context/AuthContext";
-import { Gasto, ResponseDTO, Category } from "../../types/types";
+import { Gasto, ResponseDTO, Category, DashboardData } from "../../types/types";
 
 // Interface para la respuesta paginada de Spring Data
 interface PageResponse<T> {
@@ -49,6 +49,8 @@ function GastosContent() {
   const [gastoSeleccionado, setGastoSeleccionado] = useState<Gasto | null>(
     null,
   );
+  const [data, setData] = useState<DashboardData | null>(null);
+
 
   const [formData, setFormData] = useState({
     description: "",
@@ -56,6 +58,21 @@ function GastosContent() {
     date: new Date().toISOString().split("T")[0],
     categoryId: "",
   });
+
+  const fetchGastosTotales = async() => {
+    if (!user?.id) return;
+
+    try {
+      const response = await api.get<ResponseDTO<DashboardData>>(
+        `/dashboard/resumen/${user.id}`,
+      );
+      setData(response.data.data);
+
+    }catch (error) {
+      console.error("Error al cargar resumen de gastos:", error);
+    }
+    
+  }
 
   // 1. Cargar Gastos Paginados (Todos los tiempos)
   const fetchGastosPaginados = async (pageNumber: number) => {
@@ -97,6 +114,7 @@ function GastosContent() {
 
   useEffect(() => {
     fetchGastosPaginados(page);
+    fetchGastosTotales();
   }, [user?.id, page]);
 
   // --- MANEJADORES ---
@@ -142,6 +160,13 @@ function GastosContent() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const irADetalle = (catNombre: string) => {
+    router.push(`/gastos?categoria=${catNombre.toLowerCase()}`);
+  };
+
+  const totalGastosHistoricos = data?.totalGastosHistoricos || 0;
+
+
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8 text-gray-800">
       <div className="max-w-5xl mx-auto">
@@ -164,18 +189,33 @@ function GastosContent() {
 
           
 
-          <button
+          {/* <button
             onClick={() => setIsModalOpen(true)}
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl font-bold transition-all shadow-lg"
           >
             + Nuevo Gasto
-          </button>
+          </button> */}
         </div>
-
-        <div className="flex justify-end mb-4">
-             <div className="bg-white px-10 py-6 rounded-[2.5rem] shadow-sm border-l-[12px] border-red-500">
+        
+        <div className="flex justify-between mb-4">
+          <div className="flex justify-end mb-4">
+              <div className="bg-white px-10 py-6 rounded-[2.5rem] shadow-sm border-l-[12px] border-red-500">
               <p className="text-gray-400 text-xs font-black uppercase tracking-widest">
-                Total de gastos
+                Total de gastos Global
+              </p>
+              <p className="text-4xl font-black text-gray-900">
+                $
+                {totalGastosHistoricos.toLocaleString("es-MX", {
+                  minimumFractionDigits: 2,
+                })}
+              </p>
+            </div>
+          </div> 
+
+          <div className="flex justify-end mb-4">
+              <div className="bg-white px-10 py-6 rounded-[2.5rem] shadow-sm border-l-[12px] border-red-500">
+              <p className="text-gray-400 text-xs font-black uppercase tracking-widest">
+                Total de gastos página
               </p>
               <p className="text-4xl font-black text-gray-900">
                 $
@@ -185,6 +225,9 @@ function GastosContent() {
               </p>
             </div>
           </div> 
+        </div>
+
+        
 
         {/* TABLA PAGINADA */}
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
@@ -220,7 +263,8 @@ function GastosContent() {
                           💳 {g.relatedDebt.name}
                         </span>
                       )}
-                      <span className="block text-[10px] text-blue-500 uppercase">
+                      <span className="block text-[10px] text-blue-500 uppercase group cursor-pointer"
+                        onClick={() => irADetalle(g.category.name)}>
                         {g.category.name}
                       </span>
                     </td>
