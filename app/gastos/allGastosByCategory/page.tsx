@@ -2,13 +2,13 @@
 
 import { useEffect, useState, Suspense, ChangeEvent, FormEvent } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import api from "../lib/axios";
-import { useAuth } from "../context/AuthContext";
-import { Gasto, ResponseDTO, Category, Deuda } from "../types/types";
+import api from "../../lib/axios";
+import { useAuth } from "../../context/AuthContext";
+import { Gasto, ResponseDTO, Category, Deuda } from "../../types/types";
 import Input from "@/components/form/input/InputField";
 import DatePicker from "@/components/form/date-picker";
 
-export default function GastosPage() {
+export default function GastosPageByCategoryPage() {
   return (
     <Suspense
       fallback={
@@ -52,14 +52,12 @@ function GastosContent() {
   // 1. Cargar Gastos
   const fetchGastos = async () => {
     if (!user?.id) return;
-    const hoy = new Date();
-    const mes = hoy.getMonth() + 1;
-    const anio = hoy.getFullYear();
+   
 
     try {
       setLoading(true);
-      let url = `/gastos/usuario/${user.id}/mes?mes=${mes}&anio=${anio}`;
-      if (categoriaFiltrada) url += `&categoria=${categoriaFiltrada}`;
+      let url = `/gastos/usuario/${user.id}/categoria`;
+      if (categoriaFiltrada) url += `?categoria=${categoriaFiltrada}`;
       const response = await api.get<ResponseDTO<Gasto[]>>(url);
       setGastos(response.data.data);
       console.log("aqui")
@@ -228,12 +226,7 @@ function GastosContent() {
               Ver todos los gastos
             </button>
 
-            <button
-              onClick={() => router.push("/gastos/allGastosByCategory?categoria=" + (categoriaFiltrada || ""))}
-              className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center gap-1 mb-2"
-            >
-              Ver todos los gastos totales por la categoria actual
-            </button>
+          
 
             <button
               onClick={() => router.push("/gastos/buscar")}
